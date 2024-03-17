@@ -30,7 +30,7 @@ const sendMail = (userEmail, userName, message) => {
              <p>you just requested for your password to be changed. kindly click the following link</p> <br>  
             <strong><a href="${message}">reset password</a></strong>
               to reset password. link is active for 30mins and can only be used once.
-               <br><br> Best Regards <br> <br> ignore if you didnt request this email <br><br> lifePlusAOB team`,
+               <br><br> Best Regards <br> <br> ignore if you didnt request this email <br><br> SCHOOLBASE team`,
       },
     ],
   });
