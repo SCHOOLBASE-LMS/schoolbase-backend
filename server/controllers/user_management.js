@@ -156,9 +156,7 @@ router.get("/user/reset-password/:id/:token", async (req, res, _next) => {
   try {
     // verify token
 
-    res.redirect(
-      `https://potentiostat-project.vercel.app/new-password/?${id}`
-    );
+    res.redirect(`https://example.com/new-password/?${id}`);
   } catch (error) {
     console.log(error.message);
     res.send("<strong>link expired or timed out</strong>");
