@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const userController = require("./server/controllers/user");
+const userManagement = require("./server/controllers/user_management");
 
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -36,6 +37,7 @@ app.use(
 
 // Mount the user controller
 app.use("/", userController);
+app.use("/user", userManagement);
 
 app.use(
   session({

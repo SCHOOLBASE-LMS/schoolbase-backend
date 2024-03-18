@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const user = require("../services/user");
 const jwt = require("jsonwebtoken");
-const mailUser = require("../services/sendMail");
+const mailUser = require("../utils/sendMail");
 // const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
@@ -110,7 +110,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 //   });
 // });
 
-router.post("/user/forgot-password", async (req, res, _next) => {
+router.post("/forgot-password", async (req, res, _next) => {
   const { email } = req.body;
   const userFromDB = await user.getByEmail(email);
   if (userFromDB) {
@@ -156,7 +156,9 @@ router.get("/user/reset-password/:id/:token", async (req, res, _next) => {
   try {
     // verify token
 
-    res.redirect(`https://life-plus-webapp.vercel.app/new-password/?${id}`);
+    res.redirect(
+      `https://potentiostat-project.vercel.app/new-password/?${id}`
+    );
   } catch (error) {
     console.log(error.message);
     res.send("<strong>link expired or timed out</strong>");

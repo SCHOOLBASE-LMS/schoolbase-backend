@@ -16,7 +16,7 @@ const sendMail = (userEmail, userName, message) => {
     Messages: [
       {
         From: {
-          Email: "oreoluwaajayyiruth@gmail.com",
+          Email: "bowaleadetunji@gmail.com",
           Name: "SCHOOLBASE team",
         },
         To: [
