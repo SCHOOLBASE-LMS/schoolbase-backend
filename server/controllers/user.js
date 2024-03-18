@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const user = require("../services/user");
+const { sendMail } = require("../utils/sendMail");
 
 router.get("/", (req, res) => {
   res.status(200).json({
@@ -76,6 +77,36 @@ router.get("/user", async (req, res) => {
   }
   const getUser = await user.getById(userid);
   res.status(200).json(getUser);
+});
+
+router.post("/reset-password", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    res.status(400).json({
+      error: "Email is required",
+    });
+  } else {
+    try {
+      const existingUser = await user.getByEmail(email);
+      if (!existingUser) {
+        res.status(404).json({
+          error: "User not found",
+        });
+      } else {
+        const resetLink = "https://example.com/reset-password";
+        await sendMail(existingUser.email, existingUser.fullName, resetLink);
+        res.status(200).json({
+          message: "Password reset email sent successfully",
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      res.status(500).json({
+        error: "Internal server error",
+      });
+    }
+  }
 });
 
 module.exports = router;
