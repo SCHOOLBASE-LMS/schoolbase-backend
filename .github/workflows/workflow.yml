@@ -34,7 +34,7 @@ jobs:
   merge-to-dev:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'pull_request' && github.event.action == 'opened' || github.event.action == 'synchronize' || github.event.action == 'reopened'
 
     steps:
       - name: Checkout code
@@ -47,23 +47,29 @@ jobs:
             exit 1
           fi
 
+      - name: Check branch name
+        run: |
+          BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})
+          if ! [[ $BRANCH_NAME =~ ^(main|feature|bugfix)\/[a-z0-9-]+$ ]]; then
+            echo "Invalid branch name. Branch names must follow the pattern: (main|feature|bugfix)/[a-z0-9-]+"
+            exit 1
+          fi
+
       - name: Request review for merging to dev
         uses: actions/github-script@v4
         with:
           script: |
             const { owner, repo } = context.repo;
-            const contributors = await github.repos.listContributors({
-              owner,
-              repo
-            });
-            const reviewerUsernames = contributors.data.map(contributor => contributor.login);
-            const response = await github.pulls.createReviewRequest({
+            const response = await github.pulls.listReviews({
               owner,
               repo,
               pull_number: context.payload.pull_request.number,
-              reviewers: reviewerUsernames
             });
-            console.log(response)
+            const approvals = response.data.filter(review => review.state === 'APPROVED');
+            if (approvals.length < 1) {
+              console.log("At least one approval is required before merging.");
+              process.exit(1);
+            }
 
       - name: Merge to dev branch
         uses: pullreminders/merge@v0.8.0
