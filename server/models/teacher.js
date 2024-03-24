@@ -8,11 +8,14 @@ const TeacherSchema = new mongoose.Schema({
     class: {
         list: [String]
     },
+    subjectsTaught: {
+        list: [String]
+    },
     role: {
         type: String,
         default: "staff"
     }
-})
+}, {timestamps: true})
 
 const Teacher = mongoose.model('Teacher', TeacherSchema);
 module.exports = Teacher

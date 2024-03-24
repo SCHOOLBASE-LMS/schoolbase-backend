@@ -11,20 +11,16 @@ const StudentSchema = new Schema(
     studentId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
-    parentName: {
-      type: String,
-    },
-    guardianName: {
-      type: String,
-    },
+    parentName: String,
+    guardianName: String,
     maritalStatus: {
       type: String,
+      enum: ['single', 'married', 'widowed']
     },
-    phoneNumber: {
-      type: String,
-    },
+    phoneNumber: String,
     class: {
         type: String,
     },
@@ -52,7 +48,8 @@ const StudentSchema = new Schema(
    },
    dateAdmitted: {
         type: Date,
-   }, role: {
+   },
+   role: {
     type: String,
     default: 'student'
    }
