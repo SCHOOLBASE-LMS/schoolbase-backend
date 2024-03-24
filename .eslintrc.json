@@ -1,0 +1,14 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": "standard",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "eslint-plugin-n/backward-javascript": "off"
+    }
+}

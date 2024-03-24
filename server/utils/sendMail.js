@@ -1,8 +1,8 @@
-const Mailjet = require("node-mailjet");
+const Mailjet = require('node-mailjet')
 const mailjet = Mailjet.apiConnect(
   process.env.RP_APIKEY_PUBLIC,
   process.env.RP_APIKEY_PRIVATE
-);
+)
 
 /**
  * sends message to user email
@@ -12,37 +12,37 @@ const mailjet = Mailjet.apiConnect(
  */
 
 const sendMail = (userEmail, userName, message) => {
-  const request = mailjet.post("send", { version: "v3.1" }).request({
+  const request = mailjet.post('send', { version: 'v3.1' }).request({
     Messages: [
       {
         From: {
-          Email: "bowaleadetunji@gmail.com",
-          Name: "SCHOOLBASE team",
+          Email: 'bowaleadetunji@gmail.com',
+          Name: 'SCHOOLBASE team'
         },
         To: [
           {
             Email: userEmail,
-            Name: userName,
-          },
+            Name: userName
+          }
         ],
-        Subject: "Password reset Request",
+        Subject: 'Password reset Request',
         HTMLPart: `<h3>Dear ${userName}</h3> <br>
              <p>you just requested for your password to be changed. kindly click the following link</p> <br>  
             <strong><a href="${message}">reset password</a></strong>
               to reset password. link is active for 30mins and can only be used once.
-               <br><br> Best Regards <br> <br> ignore if you didnt request this email <br><br> SCHOOLBASE team`,
-      },
-    ],
-  });
+               <br><br> Best Regards <br> <br> ignore if you didnt request this email <br><br> SCHOOLBASE team`
+      }
+    ]
+  })
   request
     .then((result) => {
-      console.log(result.body);
+      console.log(result.body)
     })
     .catch((err) => {
-      console.log(err.statusCode);
-    });
-};
+      console.log(err.statusCode)
+    })
+}
 
 module.exports = {
-  sendMail,
-};
+  sendMail
+}

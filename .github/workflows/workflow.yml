@@ -1,0 +1,72 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/*'
+      - 'bugfix/*'
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+#      - name: Lint code with ESLint
+#        run: npm run lint
+
+#      - name: Test code
+#        run: npm test
+
+  merge-to-dev:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Ensure no direct push to dev branch
+        run: |
+          if [ $GITHUB_ACTOR == "github-actions[bot]" ]; then
+            echo "Direct push to dev branch is not allowed. Please use pull requests."
+            exit 1
+          fi
+
+      - name: Request review for merging to dev
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const contributors = await github.repos.listContributors({
+              owner,
+              repo
+            });
+            const reviewerUsernames = contributors.data.map(contributor => contributor.login);
+            const response = await github.pulls.createReviewRequest({
+              owner,
+              repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: reviewerUsernames
+            });
+            console.log(response)
+
+      - name: Merge to dev branch
+        uses: pullreminders/merge@v0.8.0
+        with:
+          method: 'squash'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

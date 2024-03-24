@@ -1,79 +1,78 @@
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
 // creates a new user
 const create = async ({ fullName, email, password }) => {
   try {
-    if (await User.findOne({ email: email })) {
-      return [false, "user already exists, kindly log in."];
+    if (await User.findOne({ email })) {
+      return [false, 'user already exists, kindly log in.']
     }
-    const hash = await bcrypt.hash(password, saltRounds);
+    const hash = await bcrypt.hash(password, saltRounds)
     const user = new User({
-      fullName: fullName,
-      email: email,
-      password: hash,
-    });
+      fullName,
+      email,
+      password: hash
+    })
     if (await user.save()) {
-      return [true, user];
+      return [true, user]
     }
   } catch (err) {
-    return [false, err];
+    return [false, err]
   }
-};
+}
 // validate user login request
 const validate = async ({ email, password }) => {
-  const isValidUser = await User.findOne({ email: email });
+  const isValidUser = await User.findOne({ email })
   if (isValidUser && isValidUser.googleId) {
     return [
-      "google user",
-      "This account was created with google, kindly log in with google or reset password to create a new password",
-    ];
+      'google user',
+      'This account was created with google, kindly log in with google or reset password to create a new password'
+    ]
   } else if (isValidUser) {
-    return [await bcrypt.compare(password, isValidUser.password), isValidUser];
+    return [await bcrypt.compare(password, isValidUser.password), isValidUser]
   }
-  return false;
-};
+  return false
+}
 /* Return user with specified id */
 const getById = async (id) => {
-  const user = await User.findById(id);
-  return user;
-};
+  const user = await User.findById(id)
+  return user
+}
 
 /* Return user with specified email */
 const getByEmail = async (email) => {
-  const user = await User.findOne({ email: email });
-  return user;
-};
+  const user = await User.findOne({ email })
+  return user
+}
 
 /* Return all users */
 const getAll = async () => {
-  return await User.find();
-};
+  return await User.find()
+}
 
 // changes user password
 const updatePassword = async (password, userId) => {
   try {
-    const hash = await bcrypt.hash(password, saltRounds);
+    const hash = await bcrypt.hash(password, saltRounds)
 
     const update = await User.updateOne(
       { _id: userId },
       {
         $set: {
-          password: hash,
-        },
+          password: hash
+        }
       }
-    );
+    )
     if (update.acknowledged) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
-
+}
 
 module.exports = {
   create,
@@ -81,5 +80,5 @@ module.exports = {
   getByEmail,
   getAll,
   validate,
-  updatePassword,
-};
+  updatePassword
+}
