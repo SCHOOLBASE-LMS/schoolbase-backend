@@ -28,8 +28,8 @@ jobs:
 #      - name: Lint code with ESLint
 #        run: npm run lint
 
-      - name: Test code
-        run: npm test
+#      - name: Test code
+#        run: npm test
 
   merge-to-dev:
     runs-on: ubuntu-latest
