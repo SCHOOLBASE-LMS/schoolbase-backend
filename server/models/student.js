@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
 const StudentSchema = new Schema(
   {
-    user: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: true
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     },
     studentId: {
-        type: String,
-        required: true,
-        unique: true,
-        index: true
+      type: String,
+      required: true,
+      unique: true,
+      index: true
     },
     parentName: String,
     guardianName: String,
@@ -22,42 +22,42 @@ const StudentSchema = new Schema(
     },
     phoneNumber: String,
     class: {
-        type: String,
+      type: String
     },
     extracurricular: {
-        list: [String]
+      list: [String]
     },
     interests: {
-        list: [String]
+      list: [String]
     },
     skills: {
-        list: [String]
+      list: [String]
     },
     previousSchools: {
-        list: [String]
+      list: [String]
     },
     additionalDocuments: {
-        list: [String]
+      list: [String]
     },
     signature: {
-        list: [String]
+      list: [String]
     },
-   admissionStatus: {
-        type: Boolean,
-        default: false
-   },
-   dateAdmitted: {
-        type: Date,
-   },
-   role: {
-    type: String,
-    default: 'student'
-   }
+    admissionStatus: {
+      type: Boolean,
+      default: false
+    },
+    dateAdmitted: {
+      type: Date
+    },
+    role: {
+      type: String,
+      default: 'student'
+    }
   },
 
   { timestamps: true }
-);
+)
 
-const Student = mongoose.model("students", StudentSchema);
+const Student = mongoose.model('students', StudentSchema)
 
-module.exports = Student;
+module.exports = Student
