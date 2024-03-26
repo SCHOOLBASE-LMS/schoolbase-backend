@@ -4,12 +4,9 @@ const AdminSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  accessLevel: {
-    type: String,
-    enum: ['super', 'admin']
-  },
   role: {
     type: String,
+    enum: ['super', 'admin'],
     default: 'staff'
   }
 })

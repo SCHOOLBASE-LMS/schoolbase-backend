@@ -21,7 +21,7 @@ const AttendanceSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   },
-  reasonForAbseence: { type: String }
+  reasonForAbscence: { type: String }
 }, { timestamps: true })
 
 const Attendance = mongoose.model('Student', AttendanceSchema)

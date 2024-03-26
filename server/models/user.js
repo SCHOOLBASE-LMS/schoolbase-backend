@@ -45,12 +45,19 @@ const UserSchema = new Schema(
       type: String
     },
     maritalStatus: {
-      type: String
+      type: String,
+      enum: ['single', 'married', 'widowed']
     },
     phoneNumber: {
       type: String
-    }
-
+    },
+    otp: {
+      type: String
+    },
+    otpExpiry: {
+      type: Date
+    },
+    refreshToken: String
   },
 
   { timestamps: true }

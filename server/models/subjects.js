@@ -10,7 +10,7 @@ const SubjectSchema = new mongoose.Schema({
     ref: 'Teacher',
     required: true
   },
-  classLevels: {
+  classes: {
     type: [String],
     default: []
   }

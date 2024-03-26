@@ -16,11 +16,6 @@ const StudentSchema = new Schema(
     },
     parentName: String,
     guardianName: String,
-    maritalStatus: {
-      type: String,
-      enum: ['single', 'married', 'widowed']
-    },
-    phoneNumber: String,
     class: {
       type: String
     },
@@ -42,9 +37,12 @@ const StudentSchema = new Schema(
     signature: {
       list: [String]
     },
-    admissionStatus: {
+    isAdmitted: {
       type: Boolean,
       default: false
+    },
+    registeredCourses: {
+      list: [String]
     },
     dateAdmitted: {
       type: Date
