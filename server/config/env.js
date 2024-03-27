@@ -4,8 +4,8 @@ const dev = {
 }
 
 const staging = {
-  SERVER_PORT: process.env.SERVER_DEV_PORT,
-  MONGODB_URI: process.env.MONGODB_DEV_URI
+  SERVER_PORT: process.env.SERVER_STAGIMG_PORT,
+  MONGODB_URI: process.env.MONGODB_STAGING_URI
 }
 module.exports = function () {
   switch (process.env.NODE_ENV) {
