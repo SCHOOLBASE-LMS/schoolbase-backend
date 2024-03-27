@@ -1,4 +1,4 @@
-const Student = require('../models/Student')
+const Student = require('../models/student')
 
 exports.applyForAdmission = async (applicationData) => {
   // Here, you could add logic to validate applicationData, check for duplicates, etc.
