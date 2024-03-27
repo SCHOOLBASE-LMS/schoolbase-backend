@@ -2,12 +2,9 @@ name: Node.js CI/CD
 
 on:
   push:
-    branches:
-      - main
-      - 'feature/*'
-      - 'bugfix/*'
-  pull_request_review:
-    types: [submitted]
+    branches: [dev]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
