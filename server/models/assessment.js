@@ -5,6 +5,9 @@ const AssessmentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  class: {
+    type: String
+  },
   description: String,
   subject: {
     type: mongoose.Schema.Types.ObjectId,

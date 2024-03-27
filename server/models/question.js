@@ -4,6 +4,10 @@ const QuestionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  subject: {
+    type: String
+  },
+  class: String,
   type: {
     type: String,
     enum: ['multiple-choice', 'true-false', 'short-answer', 'essay'],
