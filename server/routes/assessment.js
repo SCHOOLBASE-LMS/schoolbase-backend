@@ -1,11 +1,11 @@
 // Route to handle questions and assessment creation
 const express = require('express')
 const router = express.Router()
-const { createQuestion, createAssessment } = require('../controllers/assessmentController')
+const { assessmentController } = require('../controllers')
 
 // Define routes
 
-router.post('/question', createQuestion)
-router.post('/create', createAssessment)
+router.post('/question', assessmentController.createQuestion)
+router.post('/create', assessmentController.createAssessment)
 
 module.exports = router
