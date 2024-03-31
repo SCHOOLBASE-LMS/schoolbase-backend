@@ -3,7 +3,7 @@ const classSchedule = require("../models/classSchedule");
 
 async function ScheduleTimeTable (req,res) {
  try {
-    const {subject, className, startTime, endTime, topic, day,color } = req.body;
+    const {subject, className,Date, startTime, endTime, topic, day,color } = req.body;
     console.log(req.body.className)
      const startTimeNum = new Date(startTime);
      const endTimeNum = new Date(endTime);

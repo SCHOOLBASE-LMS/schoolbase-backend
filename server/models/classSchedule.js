@@ -10,7 +10,11 @@ const ClassScheduleSchema = new mongoose.Schema({
     enum: ['JSS1','JSS2','JSS3','SS1', 'SS2', 'SS3'],
     required: true
   },
-  
+  date: {
+    type:Date,
+    required: true
+  },
+ 
   startTime: {
     type: Number,
     required: true
