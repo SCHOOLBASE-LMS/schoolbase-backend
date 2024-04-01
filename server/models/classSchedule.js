@@ -16,11 +16,11 @@ const ClassScheduleSchema = new mongoose.Schema({
   },
  
   startTime: {
-    type: Number,
+    type: String,
     required: true
   },
   endTime: {
-    type: Number,
+    type: String,
     required: true
   },
   
@@ -30,7 +30,7 @@ const ClassScheduleSchema = new mongoose.Schema({
   },
   day: {
     type: String,
-    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    enum: ['sunday','monday', 'tuesday', 'wednesday', 'thursday', 'friday','saturday'],
     required: true
   },
   color: {
@@ -45,4 +45,4 @@ const ClassScheduleSchema = new mongoose.Schema({
   // }
 })
 
-module.exports = mongoose.model('ClassSchedule', ClassScheduleSchema)
+module.exports = mongoose.model('ClassScheduleTable', ClassScheduleSchema)
