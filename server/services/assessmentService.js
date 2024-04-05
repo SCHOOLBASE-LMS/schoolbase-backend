@@ -1,4 +1,4 @@
-const { Assessment, Question } = require('../models')
+const { Assessment, Question, AssessmentRecord } = require('../models')
 
 const createQuestion = async (questionData) => {
   // Ther is need to handle media file upload for questions later
@@ -6,20 +6,21 @@ const createQuestion = async (questionData) => {
   if (questionExists) {
     throw new Error('Question already exists')
   }
-  const newQuestion = Question(questionData)
+  const newQuestion = new Question(questionData)
   await newQuestion.save()
   return newQuestion
 }
 
 const getQuestionById = async (questionId) => {
-  const question = await Question.findById({ questionId })
+  const question = await Question.findById({ _id: questionId })
+  await question.populate('createdBy')
   if (!question) throw new Error('Question not found')
   return question
 }
 
-const getQuestionsByClass = async (className) => {
-  const questions = await Question.findAll({ className })
-  if (!questions) throw new Error(`No questions found for this class ${className}`)
+const getQuestionsByClass = async (question) => {
+  const questions = await Question.findAll({ className: question.className })
+  if (!questions) throw new Error(`No questions found for this class ${question.className}`)
   return questions
 }
 
@@ -45,6 +46,7 @@ const createAssessment = async (assessmentData) => {
 
 const getAssessment = async (assessmentId) => {
   const assessment = await Assessment.findOne({ _id: assessmentId })
+  await assessment.populate('questions')
   if (!assessment) throw new Error('Assessment not found')
   return assessment
 }
@@ -52,7 +54,7 @@ const getAssessment = async (assessmentId) => {
 const addQuestionsToAssessment = async (assessmentId, questions) => {
   const assessment = await getAssessment(assessmentId)
   if (!assessment) throw new Error('Assessment not found')
-  assessment.questions.push(...questions)
+  assessment.questions.push(questions.question)
   assessment.save()
   return assessment
 }
@@ -70,11 +72,28 @@ const setAssessmentTotalMarks = async (assessmentId) => {
   const assessment = await getAssessment(assessmentId)
   if (!assessment) throw new Error('Assessment not found: ' + assessmentId)
   const questionsInAssessment = assessment.questions
+  if (questionsInAssessment.length < 1) throw new Error('No questions added yet')
   const summedMarks = questionsInAssessment.reduce(
-    (acc, question) => {
-      return acc + question.marks
-    }, 0)
-  updateAssessment(assessmentId, { totalMarks: summedMarks })
+    (acc, question) =>
+      acc + question.marks, 0)
+  console.log(summedMarks)
+  await updateAssessment(assessmentId, { totalMarks: summedMarks })
+}
+
+// Grade Assessment
+const createAssessmentRecord = async (assessmentId, responses) => {
+  const assessmentResponseExists = await AssessmentRecord.find({ assessment: assessmentId })
+  if (assessmentResponseExists) throw new Error('Assessment as already been submitted')
+  const assessmentResponse = new AssessmentRecord(responses)
+  await assessmentResponse.save()
+  return assessmentResponse
+}
+
+const getAssessmentRecord = async (assessmentId) => {
+  const assessmentObj = await AssessmentRecord.findById({ assessmentId })
+  assessmentObj.filter((assessment) => {
+    return assessment.question === assessment.choice
+  })
 }
 
 module.exports = {
@@ -86,5 +105,7 @@ module.exports = {
   getAssessment,
   addQuestionsToAssessment,
   updateAssessment,
-  setAssessmentTotalMarks
+  setAssessmentTotalMarks,
+  createAssessmentRecord,
+  getAssessmentRecord
 }

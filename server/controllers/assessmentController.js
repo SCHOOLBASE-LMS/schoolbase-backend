@@ -1,4 +1,3 @@
-// const { response } = require('express')
 const { assessmentService } = require('../services')
 
 // Question controllers
@@ -45,7 +44,7 @@ const createAssessment = async (req, res) => {
     const assessment = await assessmentService.createAssessment(assessmentData)
     return res.status(201).json({ message: 'successfully created assessment', data: assessment })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message })
   }
 }
 
@@ -54,7 +53,7 @@ const getAssessment = async (req, res) => {
     const assessment = await assessmentService.getAssessment(req.params.id)
     return res.status(200).json(assessment)
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message })
   }
 }
 
@@ -72,7 +71,30 @@ const updateAssessment = async (req, res) => {
     const updatedAssessment = await assessmentService.updateAssessment(req.params.id, req.body)
     return res.status(201).json({ message: 'Assessment updated successfully', assessment: updatedAssessment })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const setAssessmentTotalMarks = async (req, res) => {
+  try {
+    const assessment = await assessmentService.getAssessment(req.params.id)
+    await assessmentService.setAssessmentTotalMarks(assessment)
+    return res.status(201).json({ message: 'Assessment total marks updated successfully', assessmentData: assessment })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+// Assessment record
+const createAssessmentRecord = async (req, res) => {
+  try {
+    const assessmentRecord = await assessmentService.createAssessmentRecord(req.params.id, req.body)
+    return res.status(201).json({
+      message: 'AssessmentRecord created successfully!',
+      assessmentRecordData: assessmentRecord
+    })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
   }
 }
 
@@ -84,6 +106,7 @@ module.exports = {
   createAssessment,
   getAssessment,
   addQuestionsToAssessment,
-  updateAssessment
-
+  updateAssessment,
+  setAssessmentTotalMarks,
+  createAssessmentRecord
 }

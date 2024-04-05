@@ -34,16 +34,18 @@ const AssessmentSchema = new mongoose.Schema({
 { timestamps: true }
 )
 
-AssessmentSchema.pre('save', async function (next) {
-  try {
-    const totalMarks = this.questions.marks.reduce((acc, marks) => acc + marks, 0)
-    this.totalMarks = totalMarks
-    next()
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
-})
+// AssessmentSchema.pre('save', async function (next) {
+//   try {
+//     if (this.questions.length > 0) {
+//       const totalMarks = this.questions.marks.reduce((acc, marks) => acc + marks, 0)
+//       this.totalMarks = totalMarks
+//       next()
+//     }
+//   } catch (error) {
+//     console.log(error)
+//     throw error
+//   }
+// })
 
 const Assessment = mongoose.model('Assessment', AssessmentSchema)
 module.exports = Assessment
