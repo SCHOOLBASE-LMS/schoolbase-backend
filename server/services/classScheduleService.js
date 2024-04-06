@@ -1,11 +1,11 @@
 const ClassSchedule = require("../models/classSchedule")
 
-const getAllClassSchedule = async (requestUser) =>{
+const getAllClassSchedule = async () =>{
     // ensure the user isLoggedIn
-    if(!requestUser) throw new Error (`Unauthorized`)
+    // if(!requestUser) throw new Error (`Unauthorized`)
 
         // get all the schedule
-    const classSchedule = await ClassScheduleTable.findAll()
+    const classSchedule = await ClassSchedule.findAll()
   if(!classSchedule) throw new Error(`No class-schedule found `)
   return classSchedule
 }
@@ -24,7 +24,13 @@ const getClassScheduleByClass = async (requestUser, requestRole, requestClass) =
     return uniqueClassSchedule
 }
 
+
+const getClassScheduleById = async (scheduleId) => {
+    const getTimeTable = await ClassSchedule.findById({_Id:scheduleId})
+    return getTimeTable
+}
 module.exports = {
     getAllClassSchedule,
     getClassScheduleByClass,
+    getClassScheduleById,
 }

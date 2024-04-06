@@ -1,6 +1,6 @@
 const express = require("express");
 const classSchedule = require("../models/classSchedule");
-const { assessmentService } = require('../services')
+const { classScheduleService } = require('../services')
 
 const changeTimeSTtringToDate = (timeString) => {
  const [time, period] = timeString.split(" ");
@@ -71,7 +71,7 @@ async function ScheduleTimeTable(req, res) {
 
 const  getAllClassSchedule =async  (req,res) =>{
     try{
-    const schedule = await  assessment.getAllClassSchedule(req.user)
+    const schedule = await classScheduleService.getAllClassSchedule()
     return res.status(201).json({message:"success", schedule})
     } catch(err){
      console.log(err.message)
@@ -80,12 +80,22 @@ const  getAllClassSchedule =async  (req,res) =>{
     
     const  getClassScheduleByClass =async  (req,res) =>{
       try{
-      const getscheduleClass = await  assessment.getAllClassSchedule(req.user, req.user.role, req.user.class)
+      const getscheduleClass = await  classScheduleService.getAllClassSchedule(req.user, req.user.role, req.user.class)
       return res.status(201).json( getscheduleClass)
       } catch(err){
         return res.status(500).json({ error: err.message })
      
       }
+      }
+
+      const getClassScheduleById = async (req,res) => {
+        try {
+           getscheduleById = await classScheduleService.getClassScheduleById(req.params.id)
+           return res.status(201).json(getscheduleById)
+        }catch(error){
+            return res.status(500).json({ error: err.message })
+
+        }
       }
       
     
