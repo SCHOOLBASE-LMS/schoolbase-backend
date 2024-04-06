@@ -1,6 +1,6 @@
 const express = require("express");
 const classSchedule = require("../models/classSchedule");
-
+const { assessmentService } = require('../services')
 
 const changeTimeSTtringToDate = (timeString) => {
  const [time, period] = timeString.split(" ");
@@ -68,6 +68,30 @@ async function ScheduleTimeTable(req, res) {
     }
 }
 
+
+const  getAllClassSchedule =async  (req,res) =>{
+    try{
+    const schedule = await  assessment.getAllClassSchedule(req.user)
+    return res.status(201).json({message:"success", schedule})
+    } catch(err){
+     console.log(err.message)
+    }
+    }
+    
+    const  getClassScheduleByClass =async  (req,res) =>{
+      try{
+      const getscheduleClass = await  assessment.getAllClassSchedule(req.user, req.user.role, req.user.class)
+      return res.status(201).json( getscheduleClass)
+      } catch(err){
+        return res.status(500).json({ error: err.message })
+     
+      }
+      }
+      
+    
+
 module.exports = {
-    ScheduleTimeTable
+    ScheduleTimeTable,
+    getAllClassSchedule,
+  getClassScheduleByClass,
 }
