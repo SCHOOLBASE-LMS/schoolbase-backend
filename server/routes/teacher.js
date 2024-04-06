@@ -13,5 +13,7 @@ router.post('/schedule', teacherController.ScheduleTimeTable)
 router.post('/schedule', teacherController.ScheduleTimeTable)
 router.get("/all-schedule",teacherController.getAllClassSchedule)
 router.get("/timetable",isLoggedIn, isStudent, teacherController.getClassScheduleByClass)
+router.get("/schedule:id",teacherController.getClassScheduleById)
+router.put("/update-schedule:id",teacherController.  getClassScheduleByIdAndUpdate)
 
 module.exports = router

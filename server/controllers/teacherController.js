@@ -90,13 +90,29 @@ const  getAllClassSchedule =async  (req,res) =>{
 
       const getClassScheduleById = async (req,res) => {
         try {
-           getscheduleById = await classScheduleService.getClassScheduleById(req.params.id)
+          const id = req.params.id
+           getscheduleById = await classScheduleService.getClassScheduleById(id)
            return res.status(201).json(getscheduleById)
         }catch(error){
-            return res.status(500).json({ error: err.message })
+            return res.status(500).json({ error: error.message })
 
         }
       }
+
+
+      const getClassScheduleByIdAndUpdate = async (req, res) => {
+        try {
+             const id = req.params.id;
+              const update = req.body;
+              // send id and update (i.e : the update coming from the frontend)
+               updateById = await classScheduleService.getClassScheduleByIdAndUpdate(id. update)
+               return res.status(201).json({message:"success", updateById})
+
+        }catch(error){
+          return res.status(500).json({error:error.message})
+        }
+      }
+
       
     
 
@@ -104,4 +120,6 @@ module.exports = {
     ScheduleTimeTable,
     getAllClassSchedule,
   getClassScheduleByClass,
+  getClassScheduleById,
+  getClassScheduleByIdAndUpdate,
 }
