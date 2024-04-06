@@ -1,4 +1,4 @@
-const {ClassScheduleTable} = require("../models")
+const ClassSchedule = require("../models/classSchedule")
 
 const getAllClassSchedule = async (requestUser) =>{
     // ensure the user isLoggedIn
