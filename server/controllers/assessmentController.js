@@ -1,4 +1,4 @@
-const { assessmentService } = require('../services')
+const { assessmentService, studentService } = require('../services')
 
 // Question controllers
 const createQuestion = async (req, res) => {
@@ -107,10 +107,30 @@ const getAssessmentRecordById = async (req, res) => {
   }
 }
 
+const getAssessmentRecordByStudentId = async (req, res) => {
+  try {
+    const assessmentRecord = await assessmentService
+      .getAssessmentRecordByStudentId(req.params.studentId)
+    return res.status(200).json(assessmentRecord)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 const markAssessment = async (req, res) => {
   try {
     const assessmentRecord = await assessmentService.markAssessment(req.params.id)
     return res.status(200).json(assessmentRecord)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const getStudentsResponsesAndCorrectAnswer = async (req, res) => {
+  try {
+    const studentResponseAndAnswer = await assessmentService
+      .getStudentsResponsesAndCorrectAnswer(req.params.studentId)
+    return res.status(200).json(studentResponseAndAnswer)
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
@@ -128,5 +148,7 @@ module.exports = {
   setAssessmentTotalMarks,
   createAssessmentRecord,
   getAssessmentRecordById,
-  markAssessment
+  markAssessment,
+  getAssessmentRecordByStudentId,
+  getStudentsResponsesAndCorrectAnswer
 }

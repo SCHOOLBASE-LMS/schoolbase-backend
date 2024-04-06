@@ -113,6 +113,13 @@ const getAssessmentRecordById = async (assessmentId) => {
   return assessmentObj
 }
 
+const getAssessmentRecordByStudentId = async (studentId) => {
+  const assessmentObj = await AssessmentRecord.findOne({ student: studentId })
+  if (!assessmentObj) throw new Error('Assessment Record not found')
+  await assessmentObj.populate('responses.question')
+  return assessmentObj
+}
+
 const markAssessment = async (assessmentRecordId) => {
   const assessmentRecord = await AssessmentRecord.findOne({ _id: assessmentRecordId })
   if (!assessmentRecord) throw new Error('Assessment record not found')
@@ -138,6 +145,12 @@ const markAssessment = async (assessmentRecordId) => {
   return assessmentRecord
 }
 
+const getStudentsResponsesAndCorrectAnswer = async (studentId) => {
+  const assessmentRecord = await getAssessmentRecordByStudentId(studentId)
+  const responsesAndAnswer = assessmentRecord.responses
+  return responsesAndAnswer
+}
+
 // const assignGradeToAssessmentRecord = async (assessmentRecordId) => {}
 
 // Get all the responses and question objects
@@ -154,5 +167,7 @@ module.exports = {
   setAssessmentTotalMarks,
   createAssessmentRecord,
   getAssessmentRecordById,
-  markAssessment
+  getAssessmentRecordByStudentId,
+  markAssessment,
+  getStudentsResponsesAndCorrectAnswer
 }
