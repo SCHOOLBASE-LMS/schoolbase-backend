@@ -15,5 +15,11 @@ router.get('/question/:class', assessmentController.getQuestionsByClass)
 // Assessment
 router.post('/create', assessmentController.createAssessment)
 router.put('/set-mark/:id', assessmentController.setAssessmentTotalMarks)
+router.get('/:id', assessmentController.getAssessment)
+
+// Assessment recording and grading
+router.post('/:id/create-record', assessmentController.createAssessmentRecord)
+router.get('/record/:id', assessmentController.getAssessmentRecordById)
+router.put('/mark/:id', assessmentController.markAssessment)
 
 module.exports = router

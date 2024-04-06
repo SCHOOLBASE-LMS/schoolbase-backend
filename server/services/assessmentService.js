@@ -80,21 +80,67 @@ const setAssessmentTotalMarks = async (assessmentId) => {
   await updateAssessment(assessmentId, { totalMarks: summedMarks })
 }
 
-// Grade Assessment
-const createAssessmentRecord = async (assessmentId, responses) => {
-  const assessmentResponseExists = await AssessmentRecord.find({ assessment: assessmentId })
-  if (assessmentResponseExists) throw new Error('Assessment as already been submitted')
-  const assessmentResponse = new AssessmentRecord(responses)
+// GRADE ASSESSMENT
+
+const createAssessmentRecord = async (studentId, responsesData) => {
+  const assessmentRecordExists = await AssessmentRecord.findOne({
+    assessment: responsesData.assessmentId
+  })
+  if (assessmentRecordExists) throw new Error('Assessment has already been submitted')
+  // get assessment object in the assessment
+  const assessment = await getAssessment(responsesData.assessmentId)
+  assessment.populate('questions')
+  if (!assessment) throw new Error('Assessment not found')
+
+  const assessmentResponse = new AssessmentRecord({
+    student: studentId,
+    assessment: assessment.id,
+    marksObtainable: assessment.totalMarks
+  })
+
+  for (let i = 0; i < assessment.questions.length; i++) {
+    assessmentResponse.responses.push({ question: assessment.questions[i], choice: responsesData.choices[i] })
+  }
+  await assessmentResponse.populate('responses')
   await assessmentResponse.save()
   return assessmentResponse
 }
 
-const getAssessmentRecord = async (assessmentId) => {
-  const assessmentObj = await AssessmentRecord.findById({ assessmentId })
-  assessmentObj.filter((assessment) => {
-    return assessment.question === assessment.choice
-  })
+const getAssessmentRecordById = async (assessmentId) => {
+  const assessmentObj = await AssessmentRecord.findOne({ _id: assessmentId })
+  if (!assessmentObj) throw new Error('Assessment Record not found')
+  await assessmentObj.populate('responses.question')
+  return assessmentObj
 }
+
+const markAssessment = async (assessmentRecordId) => {
+  const assessmentRecord = await AssessmentRecord.findOne({ _id: assessmentRecordId })
+  if (!assessmentRecord) throw new Error('Assessment record not found')
+  await assessmentRecord.populate('responses.question')
+  //  evaluate the answers
+  let score = 0
+  assessmentRecord.responses.forEach((response) => {
+    if (response.question.type === 'short-answer') {
+      const answer = response.question.correctAnswer
+
+      if (response.choice.toLowerCase() === answer.toLowerCase()) {
+        score += Number(response.question.marks)
+      }
+    } else if (response.question.type === 'true-false' || response.question.type === 'multiple-choice') {
+      const answer = response.question.options.filter(option => option.isAnswer)
+      if (response.choice.toLowerCase() === answer[0].text.toLowerCase()) {
+        score += Number(response.question.marks)
+      }
+    }
+  })
+  assessmentRecord.marksObtained = score
+  await assessmentRecord.save()
+  return assessmentRecord
+}
+
+// const assignGradeToAssessmentRecord = async (assessmentRecordId) => {}
+
+// Get all the responses and question objects
 
 module.exports = {
   createQuestion,
@@ -107,5 +153,6 @@ module.exports = {
   updateAssessment,
   setAssessmentTotalMarks,
   createAssessmentRecord,
-  getAssessmentRecord
+  getAssessmentRecordById,
+  markAssessment
 }

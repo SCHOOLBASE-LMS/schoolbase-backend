@@ -98,6 +98,24 @@ const createAssessmentRecord = async (req, res) => {
   }
 }
 
+const getAssessmentRecordById = async (req, res) => {
+  try {
+    const assessmentRecord = await assessmentService.getAssessmentRecordById(req.params.id)
+    return res.status(200).json(assessmentRecord)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const markAssessment = async (req, res) => {
+  try {
+    const assessmentRecord = await assessmentService.markAssessment(req.params.id)
+    return res.status(200).json(assessmentRecord)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 module.exports = {
   createQuestion,
   getQuestionById,
@@ -108,5 +126,7 @@ module.exports = {
   addQuestionsToAssessment,
   updateAssessment,
   setAssessmentTotalMarks,
-  createAssessmentRecord
+  createAssessmentRecord,
+  getAssessmentRecordById,
+  markAssessment
 }
