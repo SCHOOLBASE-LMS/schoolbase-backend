@@ -69,25 +69,38 @@ async function ScheduleTimeTable(req, res) {
 }
 
 
+const getScheduleByCurrentWeek = async (req,res) => {
+  try {
+       // get start date of the week 
+       const start = new Date();
+       start.setDate(start.getDate() - start.getDay());
+
+       //    get end date of the week in ISO format
+       const end = new Date(start);
+       end.setDate(end.getDate() + 6);
+       // console.log(start);
+       // console.log(end);
+ 
+       const weeklySchedule = await classScheduleService.getScheduleByCurrentWeek(start, end)
+       return res.status(201).json({ message: "Schedule for the current week ", data: weeklySchedule })
+
+  }catch(err){
+    return res.status(500).json({ error: err.message })
+  }
+}
+
+
+
 const getAllClassSchedule = async (req, res) => {
   try {
     const user = req.user
     const schedule = await classScheduleService.getAllClassSchedule(user)
     return res.status(201).json({ message: "success", schedule })
   } catch (err) {
-    console.log(err.message)
-  }
-}
-
-const getClassScheduleByClass = async (req, res) => {
-  try {
-    const getscheduleClass = await classScheduleService.getAllClassSchedule(req.user, req.user.role, req.user.class)
-    return res.status(201).json(getscheduleClass)
-  } catch (err) {
     return res.status(500).json({ error: err.message })
-
   }
 }
+
 
 const getClassScheduleById = async (req, res) => {
   try {
@@ -127,9 +140,10 @@ const getClassScheduleByIdAndDelete = async (req, res) => {
 
 
 module.exports = {
+  getScheduleByCurrentWeek,
   ScheduleTimeTable,
   getAllClassSchedule,
-  getClassScheduleByClass,
+  // getClassScheduleByClass,
   getClassScheduleById,
   getClassScheduleByIdAndUpdate,
   getClassScheduleByIdAndDelete
