@@ -10,10 +10,10 @@ const {isLoggedIn, isStudent} = require("../middlewares/auth")
 
 router.post('/schedule', teacherController.ScheduleTimeTable)
 // router.get("/weeklyschedule", teacherController.getScheduleByCurrentWeek)
-router.post('/schedule', teacherController.ScheduleTimeTable)
-router.get("/all-schedule",teacherController.getAllClassSchedule)
+router.get("/all-schedule",isLoggedIn, teacherController.getAllClassSchedule)
 router.get("/timetable",isLoggedIn, isStudent, teacherController.getClassScheduleByClass)
-router.get("/schedule:id",teacherController.getClassScheduleById)
-router.put("/update-schedule:id",teacherController.  getClassScheduleByIdAndUpdate)
+router.get("/schedule/:id",teacherController.getClassScheduleById)
+router.put("/update-schedule/:id",teacherController.getClassScheduleByIdAndUpdate)
+router.delete("/delete-schedule/:id",teacherController.getClassScheduleByIdAndDelete )
 
 module.exports = router
