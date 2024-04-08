@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
-const Teacher = require('../models/teacher')
-const Student = require('../models/student')
+const { User, Teacher, Student } = require('../models')
 const { sendMail } = require('../services/mailService')
 const { generateOtp } = require('../utils/generateOTP')
 
@@ -22,7 +20,7 @@ exports.registerUser = async (req, res) => {
       const studentData = { user: newUser._id, ...userData }
       const newStudent = new Student(studentData)
       newRecord = await newStudent.save()
-    } else if (role === 'teacher') {
+    } else if (role === 'teac her') {
       const teacherData = { user: newUser._id, ...userData }
       const newTeacher = new Teacher(teacherData)
       newRecord = await newTeacher.save()

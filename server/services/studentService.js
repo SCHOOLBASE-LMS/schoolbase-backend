@@ -1,4 +1,4 @@
-const Student = require('../models/Student')
+const Student = require('../models/student')
 const User = require('../models/user')
 
 exports.createStudentService = async (applicationData) => {
