@@ -10,7 +10,7 @@ const StudentSchema = new Schema(
     },
     studentId: {
       type: String,
-      required: true,
+      //required: true,
       unique: true,
       index: true
     },
@@ -50,6 +50,9 @@ const StudentSchema = new Schema(
     role: {
       type: String,
       default: 'student'
+    },
+    attendance: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attendance' }]
     }
   },
 
