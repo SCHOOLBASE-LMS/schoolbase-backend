@@ -2,7 +2,10 @@ const { Assessment, Question, AssessmentRecord } = require('../models')
 
 const createQuestion = async (questionData) => {
   // Ther is need to handle media file upload for questions later
-  const questionExists = await Question.findOne({ text: questionData.text, type: questionData.type })
+  const questionExists = await Question.findOne({
+    text: questionData.text,
+    type: questionData.type
+  })
   if (questionExists) {
     throw new Error('Question already exists')
   }
@@ -12,21 +15,27 @@ const createQuestion = async (questionData) => {
 }
 
 const getQuestionById = async (questionId) => {
-  const question = await Question.findById({ _id: questionId })
+  const question = await Question.findById({
+    _id: questionId
+  })
   await question.populate('createdBy')
   if (!question) throw new Error('Question not found')
   return question
 }
 
 const getQuestionsByClass = async (question) => {
-  const questions = await Question.findAll({ className: question.className })
+  const questions = await Question.findAll({
+    className: question.className
+  })
   if (!questions) throw new Error(`No questions found for this class ${question.className}`)
   return questions
 }
 
 const getQuestionByFilter = async (filter) => {
   const questions = await Question.find(filter)
-  if (!questions || questions.length === 0) throw new Error('No questions found for the filter you provided')
+  if (
+    !questions || questions.length === 0
+  ) throw new Error('No questions found for the filter you provided')
   return questions
 }
 
@@ -88,7 +97,9 @@ const createAssessmentRecord = async (studentId, responsesData) => {
   })
   if (assessmentRecordExists) throw new Error('Assessment has already been submitted')
   // get assessment object in the assessment
-  const assessment = await getAssessment(responsesData.assessmentId)
+  const assessment = await getAssessment(
+    responsesData.assessmentId
+  )
   assessment.populate('questions')
   if (!assessment) throw new Error('Assessment not found')
 
@@ -99,7 +110,10 @@ const createAssessmentRecord = async (studentId, responsesData) => {
   })
 
   for (let i = 0; i < assessment.questions.length; i++) {
-    assessmentResponse.responses.push({ question: assessment.questions[i], choice: responsesData.choices[i] })
+    assessmentResponse.responses.push({
+      question: assessment.questions[i],
+      choice: responsesData.choices[i]
+    })
   }
   await assessmentResponse.populate('responses')
   await assessmentResponse.save()
@@ -107,21 +121,27 @@ const createAssessmentRecord = async (studentId, responsesData) => {
 }
 
 const getAssessmentRecordById = async (assessmentId) => {
-  const assessmentObj = await AssessmentRecord.findOne({ _id: assessmentId })
+  const assessmentObj = await AssessmentRecord.findOne({
+    _id: assessmentId
+  })
   if (!assessmentObj) throw new Error('Assessment Record not found')
   await assessmentObj.populate('responses.question')
   return assessmentObj
 }
 
 const getAssessmentRecordByStudentId = async (studentId) => {
-  const assessmentObj = await AssessmentRecord.findOne({ student: studentId })
+  const assessmentObj = await AssessmentRecord.findOne({
+    student: studentId
+  })
   if (!assessmentObj) throw new Error('Assessment Record not found')
   await assessmentObj.populate('responses.question')
   return assessmentObj
 }
 
 const markAssessment = async (assessmentRecordId) => {
-  const assessmentRecord = await AssessmentRecord.findOne({ _id: assessmentRecordId })
+  const assessmentRecord = await AssessmentRecord.findOne({
+    _id: assessmentRecordId
+  })
   if (!assessmentRecord) throw new Error('Assessment record not found')
   await assessmentRecord.populate('responses.question')
   //  evaluate the answers
@@ -133,9 +153,17 @@ const markAssessment = async (assessmentRecordId) => {
       if (response.choice.toLowerCase() === answer.toLowerCase()) {
         score += Number(response.question.marks)
       }
-    } else if (response.question.type === 'true-false' || response.question.type === 'multiple-choice') {
-      const answer = response.question.options.filter(option => option.isAnswer)
-      if (response.choice.toLowerCase() === answer[0].text.toLowerCase()) {
+    } else if (
+      response.question.type === 'true-false' ||
+      response.question.type === 'multiple-choice'
+    ) {
+      const answer = response.question.options
+        .filter(option => option.isAnswer
+        )
+      if (
+        response.choice.toLowerCase() ===
+        answer[0].text.toLowerCase()
+      ) {
         score += Number(response.question.marks)
       }
     }
