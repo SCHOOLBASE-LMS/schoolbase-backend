@@ -17,7 +17,10 @@ const createQuestion = async (req, res) => {
 
 const getQuestionById = async (req, res) => {
   try {
-    const question = await assessmentService.getQuestionById(req.params.id)
+    const question = await assessmentService
+      .getQuestionById(
+        req.params.id
+      )
     return res.status(200).json(question)
   } catch (error) {
     return res.status(500).json({
