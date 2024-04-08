@@ -7,6 +7,11 @@ const routes = require('./server/routes') // Adjust the path based on your proje
 
 const app = express()
 connectDB()
+
+// SEED DATABASE
+// const createManyQuestions = require('./server/utils/seed')
+// createManyQuestions()
+
 app.use(express.json())
 app.use('/', routes)
 app.use(express.json()) // for parsing application/json
