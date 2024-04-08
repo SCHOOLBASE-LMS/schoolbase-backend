@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const dayjs = require('dayjs')
-const {config} = require("dotenv");
+const { config } = require('dotenv')
 /**
  * Method to generate a signed JWT Token
  * @param {object || string} data information to sign with JWT
@@ -9,11 +9,11 @@ const {config} = require("dotenv");
  */
 
 const generateToken = (data, timeToLive) => {
-    const payload = {
-        data,
-        expiryTime: timeToLive.unix()
-    };
-    return jwt.sign(payload, config.JWT_SECRET)
+  const payload = {
+    data,
+    expiryTime: timeToLive.unix()
+  }
+  return jwt.sign(payload, config.JWT_SECRET)
 }
 
-module.exports = {generateToken}
+module.exports = { generateToken }

@@ -1,11 +1,11 @@
-const Mailjet = require('node-mailjet');
-require('dotenv').config();
-const config = require('./server/config/env')();
+const Mailjet = require('node-mailjet')
+require('dotenv').config()
+const config = require('./server/config/env')()
 
 const mailjet = Mailjet.apiConnect(
-    config.RP_APIKEY_PUBLIC,
-    config.RP_APIKEY_PRIVATE
-);
+  config.RP_APIKEY_PUBLIC,
+  config.RP_APIKEY_PRIVATE
+)
 
 /**
  * Sends an email to the user
@@ -32,17 +32,17 @@ const sendMail = (userEmail, userName, subject, htmlContent) => {
         HTMLPart: htmlContent
       }
     ]
-  });
+  })
 
   request
-      .then((result) => {
-        console.log(result.body);
-      })
-      .catch((err) => {
-        console.error(err.statusCode);
-      });
-};
+    .then((result) => {
+      console.log(result.body)
+    })
+    .catch((err) => {
+      console.error(err.statusCode)
+    })
+}
 
 module.exports = {
   sendMail
-};
+}
