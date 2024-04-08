@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-const Student = require('../models/student')
 const Teacher = require('../models/teacher')
+const Student = require('../models/student')
 const { sendMail } = require('../services/mailService')
 const { generateOtp } = require('../utils/generateOTP')
 
