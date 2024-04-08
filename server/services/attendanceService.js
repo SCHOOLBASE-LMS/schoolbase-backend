@@ -44,7 +44,7 @@ const getStudentsPresent = async()=>{
 
 // To get the list of students absent in a class
   const getStudentsAbsent = async()=>{
-  const studentsAbsent = await Attendance.find({markedAt: today, isPresent: true})
+  const studentsAbsent = await Attendance.find({markedAt: today, isPresent: false})
   return {studentsAbsent: studentsAbsent, NoOfStudents: studentsAbsent.length}
 } 
 

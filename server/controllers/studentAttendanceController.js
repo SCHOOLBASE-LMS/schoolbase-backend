@@ -17,7 +17,7 @@ const getClassStudents = async (req, res) => {
 const getStudentsPresentData = async (req, res) => {
   try {
     
-    const studentsPresent = await attendanceService.getStudentsPresent(applicationData)
+    const studentsPresent = await attendanceService.getStudentsPresent()
     res.status(200).json({ message: 'Application submitted successfully', data: studentsPresent })
   } catch (error) {
     res.status(400).json({ message: 'Something went wrong....', error: error.message })
@@ -28,7 +28,7 @@ const getStudentsPresentData = async (req, res) => {
 const getStudentsAbsentData = async (req, res) => {
     try {
       
-      const studentsAbsent = await attendanceService.getStudentsPresent(applicationData)
+      const studentsAbsent = await attendanceService.getStudentsAbsent()
       res.status(200).json({ message: 'Application submitted successfully', data: studentsAbsent })
     } catch (error) {
       res.status(400).json({ message: 'Something went wrong....', error: error.message })

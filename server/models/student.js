@@ -10,7 +10,7 @@ const StudentSchema = new Schema(
     },
     studentId: {
       type: String,
-      required: true,
+      //required: true,
       unique: true,
       index: true
     },

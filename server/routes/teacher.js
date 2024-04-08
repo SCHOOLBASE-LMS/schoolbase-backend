@@ -7,7 +7,7 @@ const { getClassStudents, getStudentsAbsentData, getStudentsPresentData, markAtt
 
 
 router.get("/studentAttendance/:class", getClassStudents)
-router.get("/studentAttendance", getStudentsAbsentData)
+router.get("/studentAbsent", getStudentsAbsentData)
 router.get("/studentPresent", getStudentsPresentData)
 router.post("/markAttendance", markAttendance)
 
