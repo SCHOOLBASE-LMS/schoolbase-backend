@@ -18,7 +18,7 @@ const AttendanceSchema = new mongoose.Schema({
   },
   markedAt: {
     type: String,
-    required: true,
+    required: true
 
   },
   reasonForAbscence: { type: String }
