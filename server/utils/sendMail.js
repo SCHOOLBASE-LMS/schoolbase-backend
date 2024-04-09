@@ -1,17 +1,20 @@
 const Mailjet = require('node-mailjet')
+require('dotenv').config()
+const config = require('./server/config/env')()
+
 const mailjet = Mailjet.apiConnect(
-  process.env.RP_APIKEY_PUBLIC,
-  process.env.RP_APIKEY_PRIVATE
+  config.RP_APIKEY_PUBLIC,
+  config.RP_APIKEY_PRIVATE
 )
 
 /**
- * sends message to user email
- * @param {the email of the user} userEmail
- * @param {the user's name} userName
- * @param {string the message to send to user} message
+ * Sends an email to the user
+ * @param {string} userEmail - The email of the user
+ * @param {string} userName - The user's name
+ * @param {string} subject - The subject of the email
+ * @param {string} htmlContent - The HTML content of the email
  */
-
-const sendMail = (userEmail, userName, message) => {
+const sendMail = (userEmail, userName, subject, htmlContent) => {
   const request = mailjet.post('send', { version: 'v3.1' }).request({
     Messages: [
       {
@@ -25,21 +28,18 @@ const sendMail = (userEmail, userName, message) => {
             Name: userName
           }
         ],
-        Subject: 'Password reset Request',
-        HTMLPart: `<h3>Dear ${userName}</h3> <br>
-             <p>you just requested for your password to be changed. kindly click the following link</p> <br>  
-            <strong><a href="${message}">reset password</a></strong>
-              to reset password. link is active for 30mins and can only be used once.
-               <br><br> Best Regards <br> <br> ignore if you didnt request this email <br><br> SCHOOLBASE team`
+        Subject: subject,
+        HTMLPart: htmlContent
       }
     ]
   })
+
   request
     .then((result) => {
       console.log(result.body)
     })
     .catch((err) => {
-      console.log(err.statusCode)
+      console.error(err.statusCode)
     })
 }
 

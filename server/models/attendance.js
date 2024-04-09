@@ -17,12 +17,12 @@ const AttendanceSchema = new mongoose.Schema({
     ref: 'Teacher'
   },
   markedAt: {
-    type: Date,
-    required: true,
-    default: Date.now
+    type: String,
+    required: true
+
   },
   reasonForAbscence: { type: String }
 }, { timestamps: true })
 
-const Attendance = mongoose.model('Student', AttendanceSchema)
+const Attendance = mongoose.model('Attendance', AttendanceSchema)
 module.exports = Attendance
