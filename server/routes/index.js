@@ -11,7 +11,7 @@ router.use('/students', studentRoutes)
 router.use('/teacher', teacherRoutes)
 
 router.use('/assessment', assessmentRoutes)
-router.use('/teacher', teacherRoutes)
+// router.use('/teacher', teacherRoutes)
 router.use('/current-class-schedule', currentweekRoutes)
 
 module.exports = router
