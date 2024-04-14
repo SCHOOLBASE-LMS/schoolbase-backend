@@ -7,7 +7,7 @@
     "dev": "nodemon index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon index.js",
     "start:staging": "cross-env NODE_ENV=staging nodemon index.js",
-    "lint": "eslint . --fix"
+    "lint": "eslint server --fix"
   },
   "author": "",
   "license": "ISC",
