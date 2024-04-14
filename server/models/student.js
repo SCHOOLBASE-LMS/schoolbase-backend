@@ -47,10 +47,6 @@ const StudentSchema = new Schema(
     dateAdmitted: {
       type: Date
     },
-    role: {
-      type: String,
-      default: 'student'
-    },
     attendance: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attendance' }]
     }

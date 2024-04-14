@@ -57,6 +57,10 @@ const UserSchema = new Schema(
     otpExpiry: {
       type: Date
     },
+    role: {
+      type: String,
+      enum: ['student', 'staff', 'teacher', 'admin', 'super']
+    },
     refreshToken: String
   },
 
