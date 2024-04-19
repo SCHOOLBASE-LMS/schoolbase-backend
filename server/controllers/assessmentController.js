@@ -9,6 +9,11 @@ const createQuestion = async (req, res) => {
       data: question
     })
   } catch (error) {
+    if (error.message === 'Question already exists') {
+      return res.status(401).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -23,6 +28,11 @@ const getQuestionById = async (req, res) => {
       )
     return res.status(200).json(question)
   } catch (error) {
+    if (error.message === 'Question not found') {
+      return res.status(401).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -45,6 +55,11 @@ const getQuestionByFilter = async (req, res) => {
     const questions = await assessmentService.getQuestionByFilter(req.body)
     return res.status(200).json(questions)
   } catch (error) {
+    if (error.message === 'No questions found for the filter you provided') {
+      return res.status(400).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({ error: error.message })
   }
 }
@@ -58,6 +73,11 @@ const createAssessment = async (req, res) => {
       message: 'successfully created assessment', data: assessment
     })
   } catch (error) {
+    if (error.message === 'Assessment already exists') {
+      return res.status(400).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -69,6 +89,11 @@ const getAssessment = async (req, res) => {
     const assessment = await assessmentService.getAssessment(req.params.id)
     return res.status(200).json(assessment)
   } catch (error) {
+    if (error.message === 'Assessment not found') {
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -86,6 +111,11 @@ const addQuestionsToAssessment = async (req, res) => {
       data: assessment
     })
   } catch (error) {
+    if( error.message === 'Assessment not found') {
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -103,6 +133,11 @@ const updateAssessment = async (req, res) => {
       assessment: updatedAssessment
     })
   } catch (error) {
+    if(error.message.includes('Assessment not found')){
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -121,6 +156,15 @@ const setAssessmentTotalMarks = async (req, res) => {
       assessmentData: assessment
     })
   } catch (error) {
+    if (error.message === 'Assessment not found') {
+      return res.status(404).json({
+        error: error.message
+      })
+    } else if (error.message === 'No questions added yet') {
+      return res.status(400).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -140,6 +184,15 @@ const createAssessmentRecord = async (req, res) => {
       assessmentRecordData: assessmentRecord
     })
   } catch (error) {
+    if (error.message === 'Assessment has already been submitted') {
+      return res.status(400).json({
+        error: error.message
+      })
+    } else if (error.message ==='Assessment not found') {
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -152,6 +205,11 @@ const getAssessmentRecordById = async (req, res) => {
       .getAssessmentRecordById(req.params.id)
     return res.status(200).json(assessmentRecord)
   } catch (error) {
+    if (error.message === 'Assessment Record not found'){
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -164,6 +222,11 @@ const getAssessmentRecordByStudentId = async (req, res) => {
       .getAssessmentRecordByStudentId(req.params.studentId)
     return res.status(200).json(assessmentRecord)
   } catch (error) {
+    if (error.message === 'Assessment Record not found'){
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({
       error: error.message
     })
@@ -176,6 +239,11 @@ const markAssessment = async (req, res) => {
       .markAssessment(req.params.id)
     return res.status(200).json(assessmentRecord)
   } catch (error) {
+    if (error.message === 'Assessment Record not found'){
+      return res.status(404).json({
+        error: error.message
+      })
+    }
     return res.status(500).json({ error: error.message })
   }
 }

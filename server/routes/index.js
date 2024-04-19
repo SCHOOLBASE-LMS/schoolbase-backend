@@ -3,7 +3,6 @@ const studentRoutes = require('./student')
 const teacherRoutes = require('./teacher')
 
 const assessmentRoutes = require('./assessment')
-const teacherRoutes = require("./teacher")
 const currentweekRoutes = require("./currentweekSchedule")
 
 const router = express.Router()
