@@ -1,10 +1,9 @@
 const Mailjet = require('node-mailjet')
-require('dotenv').config()
-const config = require('./server/config/env')()
+const config = require('dotenv').config()
 
 const mailjet = Mailjet.apiConnect(
-  config.RP_APIKEY_PUBLIC,
-  config.RP_APIKEY_PRIVATE
+  config.MJ_APIKEY_PUBLIC,
+  config.MJ_APIKEY_PRIVATE
 )
 
 /**
@@ -36,7 +35,7 @@ const sendMail = (userEmail, userName, subject, htmlContent) => {
 
   request
     .then((result) => {
-      console.log(result.body)
+      // console.log(result.Email)
     })
     .catch((err) => {
       console.error(err.statusCode)

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { User, Teacher, Student } = require('../models')
-const { sendMail } = require('../services/mailService')
+// const { sendMail } = require('../utils/sendMail')
 const { generateOtp } = require('../utils/generateOTP')
 
 // Register a new student
@@ -20,7 +20,7 @@ exports.registerUser = async (req, res) => {
       const studentData = { user: newUser._id, ...userData }
       const newStudent = new Student(studentData)
       newRecord = await newStudent.save()
-    } else if (role === 'teac her') {
+    } else if (role === 'teacher') {
       const teacherData = { user: newUser._id, ...userData }
       const newTeacher = new Teacher(teacherData)
       newRecord = await newTeacher.save()
@@ -34,7 +34,7 @@ exports.registerUser = async (req, res) => {
       <p>Welcome to SchoolBase! You have successfully registered as a ${role}.</p>
       <p>Best Regards,</p>
       <p>SCHOOLBASE team</p>`
-    sendMail(userData.email, userData.firstName, subject, htmlContent)
+    // sendMail(userData.email, userData.firstName, subject, htmlContent)
 
     res.status(201).json({ message: `${role} registered successfully`, data: newRecord })
   } catch (error) {
