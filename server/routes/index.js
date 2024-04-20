@@ -11,5 +11,6 @@ router.use('/students', studentRoutes)
 router.use('/teacher', teacherRoutes)
 router.use('/assessment', assessmentRoutes)
 router.use('/current-class-schedule', currentweekRoutes)
+router.get('/helloworld', (req, res)=> {res.send("Hello World this is Schoolbase backend")})
 
 module.exports = router

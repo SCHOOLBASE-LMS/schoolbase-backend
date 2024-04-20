@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 
 require('dotenv').config()
 const config = require('./server/config/env')()
@@ -15,6 +16,7 @@ connectDB()
 // createManyQuestions()
 
 app.use(cors())
+app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
@@ -23,7 +25,6 @@ app.use(
 )
 app.use(express.json())
 app.use('/', routes)
-app.use(express.json()) // for parsing application/json
 
 const PORT = config.SERVER_PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

@@ -7,7 +7,15 @@ const { generateOtp } = require('../utils/generateOTP')
 // Register a new student
 exports.registerUser = async (req, res) => {
   try {
+    
     const { role, ...userData } = req.body
+    // Check if user exists
+    const foundUser = await User.findOne({ email: userData.email })
+    if (foundUser){
+      return res.status(401).json({
+        message: "User already exist"
+      })
+    } 
 
     // Create a new user instance
     const newUser = new User(userData)
@@ -90,7 +98,7 @@ exports.forgotPassword = async (req, res) => {
       <p><a href="${resetLink}">Reset Password</a></p>
       <p>Best Regards,</p>
       <p>SCHOOLBASE team</p>`
-    sendMail(email, student.user.firstName, subject, htmlContent)
+    sendMail(email, subject, htmlContent)
 
     res.status(200).json({ message: 'Password reset link sent to your email' })
   } catch (error) {
