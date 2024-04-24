@@ -51,12 +51,12 @@ exports.registerUser = async (req, res) => {
 }
 
 // Login a student
-exports.loginStudent = async (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
-    const { studentId, password } = req.body
+    const { email, password } = req.body
 
     // Check if student exists
-    const student = await Student.findOne({ studentId })
+    const student = await Student.findOne({ email })
     if (!student) {
       return res.status(404).json({ message: 'Student not found' })
     }
