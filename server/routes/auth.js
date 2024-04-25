@@ -1,7 +1,13 @@
-// const express = require('express')
-// const router = express.Router()
-// const authController = require('../controllers/authController')
+const express = require('express')
+const router = express.Router()
 
-// router.post('/register', authController.registerUser)
+const authController = require('../controllers/authController')
 
-// module.exports = router
+router.post("/register", authController.registerUser)
+router.post('/login', authController.loginUser)
+router.post('/forget-password', authController.forgotPassword)
+router.post('/reset-password', authController.resetPassword)
+router.post('/register-teacher',authController.registerTeacher)
+router.post('/verify', authController.verifyUser)
+
+module.exports = router
